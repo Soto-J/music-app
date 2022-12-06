@@ -1,44 +1,35 @@
-import React, { useState, useEffect, useContext } from "react";
-import { TokenContext } from "./context/TokenContext";
+import React, { useState, useEffect } from "react";
+import { useInfoContext } from "./context/InfoContext";
 import axios from "axios";
 import { Carousel } from "flowbite-react"
 
 export const Top10List = (props) => {
-    const [playlistInfo, setPlaylistInfo] = useState("");
-    const [cardArr, setCardArr] = useState([]);
+  const [playlistInfo, setPlaylistInfo] = useState("");
+  const [cardArr, setCardArr] = useState([]);
 
-    const token = useContext(TokenContext);
+  const token = useInfoContext().token;
 
-    useEffect(() => {
-        if (playlistInfo === "" && token) {
-            //Grabs Todays Top Hits playlist from spotify
-            axios(
-                `https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M`,
-                {
-                    headers: {
-                        Authorization: "Bearer " + token,
-                    },
-                    method: "GET",
-                }
-            )
-                .then((res) => {
-                    setPlaylistInfo(res.data.tracks);
-                    let arr = [];
-                    for (let i = 0; i < 10; i++)
-                        arr.push(
-                            <Card
-                                playlistInfo={res.data.tracks}
-                                key={i}
-                                index={i}
-                            />
-                        );
-                    setCardArr(arr);
-                })
-                .catch(console.log("error"));
-        }
-    }, [Card]);
+  useEffect(() => {
+    if (playlistInfo === "" && token) {
+      //Grabs Todays Top Hits playlist from spotify
+      axios(`https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        method: "GET",
+      })
+        .then((res) => {
+          setPlaylistInfo(res.data.tracks);
+          let arr = [];
+          for (let i = 0; i < 10; i++)
+            arr.push(<Card playlistInfo={res.data.tracks} key={i} index={i} />);
+          setCardArr(arr);
+        })
+        .catch(console.log("error"));
+    }
+  }, [Card]);
 
-    console.log(playlistInfo);
+  console.log(playlistInfo);
 
     function Card(props) {
         return (
