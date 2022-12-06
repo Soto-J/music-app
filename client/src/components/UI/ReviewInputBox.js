@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import { authenticate } from "passport";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 export const ReviewInputBox = () => {
   const [reviewContent, setReviewContent] = useState("");
+  const auth = useAuth()
+  const [isLoggedIn, setisLoggedIn] = useState(auth.isAuthenticated);
+  const [reviewSection, setReviewSection] = useState("");
   const charLimit = 1000;
 
+  useEffect(() => {
+    setisLoggedIn(auth.isAuthenticated)
+  }, [auth.isAuthenticated])
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(reviewContent);
   };
 
+
   return (
+    !isLoggedIn ? <p>Login to leave a review!</p> : 
     <div>
       <form onSubmit={handleSubmit}>
         {" "}

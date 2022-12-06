@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { TokenContext } from "./context/TokenContext";
 import axios from "axios";
+import { Carousel } from "flowbite-react"
 
 export const Top10List = (props) => {
     const [playlistInfo, setPlaylistInfo] = useState("");
@@ -41,9 +42,9 @@ export const Top10List = (props) => {
 
     function Card(props) {
         return (
-            <div className="snap-start shrink-0">
-                <h1 className="font-semibold text-2xl text-left">
-                    {props.index + 1}
+            <div className="w-1/4 m-auto lg:w-1/5 m-auto" >
+                <h1 className="font-semibold text-xl text-left">
+                    { props.index + 1 }
                 </h1>
                 <img
                     src={
@@ -52,14 +53,15 @@ export const Top10List = (props) => {
                                   .images[0].url
                             : ""
                     }
-                    className="max-w-[35%]"
+                    className="lg: w-72 h-68 m-auto rounded-full"
+                    alt=""
                 ></img>
-                <h1 className="font-semibold text-2xl text-left">
+                <h1 className="font-semibold text-xl text-center">
                     {props.playlistInfo
                         ? props.playlistInfo.items[props.index].track.name
                         : "N/A"}
                 </h1>
-                <h1 className="font-semibold text-2xl text-left">
+                <h1 className="font-semibold text-xl text-center ">
                     {props.playlistInfo
                         ? props.playlistInfo.items[props.index].track.artists[0]
                               .name
@@ -70,9 +72,15 @@ export const Top10List = (props) => {
     }
 
     return (
-        <div className="bg-gray-200 mx-auto my-6 rounded-xl max-w-[95%] w-30 p-16 font-inter">
-            {/* creates the scrollable effect */}
-            <div className="flex snap-x overflow-auto">{cardArr}</div>
+        <div className="bg-gray-400 m-auto rounded-xl max-w-[95%] text-xl font-inter ">
+            <p className="p-3 mx-10 inline-block">Top Rated Songs</p>
+            <hr className="mx-8 border-black"/>
+            {/* imported from flowbite */}
+                <Carousel slide={false} className="p-10">
+                    {cardArr}
+                </Carousel>
+
         </div>
+ 
     );
 };
