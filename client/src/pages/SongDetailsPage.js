@@ -1,53 +1,51 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { SongInfo } from "../components/SongInfo";
 import { useInfoContext } from "../components/context/InfoContext";
 import { ReviewContainer } from "../components/ReviewContainer";
-import useAxiosFetchSpotify from "../components/hooks/useAxiosFetchSpotify";
+import axios from "axios";
 
 //this will be the song page that will display information about each song
 //users will be sent to this page whenever they click on a song on the home page or the search results page
 //https://www.figma.com/file/0BuMDTJLOjiYCjR997Lrif/muschart?node-id=34%3A230
 export const SongPage = (props) => {
+  const { id } = useParams();
   const [artistInfo, setArtistInfo] = useState(null);
-  const [userRating, setUserRating] = useState("N/A"); // for allowing users to choose a rating score
-
   const infoContext = useInfoContext();
   const token = infoContext.token;
-  const { songInfo } = infoContext.songInfoProvider;
+  const { songInfo, setSongInfo } = infoContext.songInfoProvider;
 
-  const handleRatingIncrease = () => {
-    if (userRating === "N/A") {
-      setUserRating(0);
-    } else if (userRating < 10) {
-      setUserRating((prevRating) => prevRating + 0.5);
-    }
-  };
-
-  const handleRatingDecrease = () => {
-    if (userRating === 0) {
-      setUserRating("N/A");
-    } else if (userRating > 0) {
-      setUserRating((prevRating) => prevRating - 0.5);
-    }
-  };
-
-  //get artist information by artist id provided by songInfo
-  const { isLoading, isError, data } = useAxiosFetchSpotify(
-    () => {
-      if (songInfo)
-        return `https://api.spotify.com/v1/artists/${songInfo.artists[0].id}`;
-    },
-    token,
-    [songInfo]
-  );
-
-  console.log("isLoading: " + isLoading);
-  console.log("isError: " + isError);
-
+  // fetches song and artist info from spotify API
   useEffect(() => {
-    setArtistInfo(data);
-    console.log(data);
-  }, [data]);
+    const fetchSongInfo = () => {
+      axios(`https://api.spotify.com/v1/tracks/${id}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        method: "GET",
+      })
+        .then((songRes) => {
+          setSongInfo(songRes.data);
+          // fetch artist info
+          axios(
+            `https://api.spotify.com/v1/artists/${songRes.data.artists[0].id}`,
+            {
+              headers: {
+                Authorization: "Bearer " + token,
+              },
+              method: "GET",
+            }
+          ).then((artistRes) => {
+            setArtistInfo(artistRes.data);
+          });
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    };
+
+    fetchSongInfo();
+  }, [id, setSongInfo, token]);
 
   return (
     <div className="mt-12 text-center">
@@ -82,9 +80,6 @@ export const SongPage = (props) => {
                 )
               : "N/A"
           }
-          userRating={userRating === "N/A" ? userRating : userRating.toFixed(1)}
-          handleRatingIncrease={handleRatingIncrease}
-          handleRatingDecrease={handleRatingDecrease}
           id={
             songInfo
               ? "https://open.spotify.com/embed/track/" + songInfo.id
@@ -96,4 +91,4 @@ export const SongPage = (props) => {
       <ReviewContainer />
     </div>
   );
-};;
+};

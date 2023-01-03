@@ -1,30 +1,60 @@
-# CTP Project Starter
+# MusChart
 
-A full stack web application starter template for building projects with React, Express.js, and Sequelize.js
+A full stack web application that serves as a music ratings and review website for users.
 
-**Current version:** 2022.2 (Oct 2022)
+## Table of Contents
+
+* [Features](#features)
+* [Stack](#stack)
+* [Project Setup](#project-setup)
+* [Project Structure](#project-structure)
+* [Contributors](#contributors)
+
+## Features
+
+* Over 80 million songs available via the search bar
+  * Supports searching by track, artist or album
+* Displays top 10 trending songs on the home page
+* Rate a song from 0-10
+* Post a written review for a song
+* Provides an overview of each song with the following information:
+  * Average rating
+  * Spotify relevance score
+  * Album and artist names
+  * Genres
+  * Spotify song preview
+
+<br/>
+<img src='./images/homePage.png' height='165px'/>
+<img src='./images/searchPage.png' height='165px'/>
+<img src='./images/songPage.png' height='165px'/>
+<img src='./images/songPageReviews.png' height='165px'/>
+<br/>
+<br/>
 
 ## Stack
 
-> Node.js v16 LTS is recommended
+> Node.js v16
 
 _Backend API_
 
 - express.js (v4.18.2)
 - sequelize.js (v6.25.2)
-- PostgreSQL (v14 recommended)
+- PostgreSQL (v14)
+- Passport (v0.6.0)
+- Bcrypt (v2.4.3)
 
 _Frontend React client_
 
 - Based on `create-react-app`
   - pre-configured to work with the api
-- Bootstrap (v5)
-  - added to `/client/public/index.html` (_optional_ can be removed)
+- Tailwind CSS (v3.2.2)
+- Flowbite (v1.5.3)
+- Flowbite-react (v0.3.4)
+- Axios (v1.1.3)
 - React Router (v6)
 
-## Development Setup
-
-Each team member will need to do this on their local machine.
+## Project Setup
 
 ### Ensure you have PostgreSQL installed
 
@@ -89,120 +119,96 @@ npm start
 - api-backend will launch at: http://localhost:8080
 - react-client will launch at: http://localhost:3000
 
-> In production you will only deploy a single app. The react client will build into static files that will be served from the backend.
-
-## Deployment
-
-### Hosting on Railway.app (recommended)
-
-1. Create a Starter account using your Github username
-   - You get $5 in credit a month for free and do not have to provide a credit card
-2. Verify your account by answering Railways questions
-3. Create a **"New Project"**
-4. Select **"Deploy from Github repo"**
-   - follow instruction to link your project repo to railway
-5. Click **"Deploy now"**
-   - your app will fail, but we will fix it in the next steps
-6. Add a PostgreSQL Database to your Railway project
-   - click the **"+ New"** button at the top right of the project
-   - click **"Database >"**
-   - click **"Add PostgreSQL"**
-   - to add a PostgreSQL Database to your project
-7. Add environment variables if you need any
-   - Do not add the `PORT` variable (Railway will set this for you)
-
-Your app will now be live and auto deployed on new commits. If it's not working you may need to restart the app manually in the Railway UI.
-
-### Hosting on Heroku (no longer free)
-
-> NOTE: Heroku is no longer free, but these instructions still work. We recommend getting started with railway.app
-
-1. Create a Heroku account (_if you don't have one_)
-2. Install the [heroku cli](https://devcenter.heroku.com/articles/heroku-cli#download-and-install) (_if you don't already have it_)
-
-- Requires that you have `git` installed
-
-```bash
-# login with the cli tool
-heroku login
-```
-
-#### Create a Heroku project
-
-Next, `cd` into this project directory and create a project:
-
-```bash
-# replace `cool-appname` with your preferred app name
-heroku create cool-appname
-
-# add a free PostgreSQL database to your heroku project
-heroku addons:create heroku-postgresql:hobby-dev
-```
-
-> This will make your app accessible at https://cool-appname.herokuapp.com (_if the name is available_).
-
-> You only need to do this once per app
-
-#### Add Environment Variables
-
-Any environment variables your app needs will be available through your heroku project's settings page.
-
-> NOTE: _Heroku calls them **Config Vars**_
-
-- Go to the dashboard page here: https://dashboard.heroku.com/apps
-- Click on the Settings tab
-- Click `Reveal Config Vars`
-- Add any environment variables you have in your `.env` file
-
-#### Deploying the app
-
-Whenever you want to update the deployed app run this command.
-
-```bash
-git push heroku main
-```
-
-> This command deploys your main branch. You can change that and deploy a different branch such as: `git push heroku development`
 
 ## Project Structure
 
 <pre>
-.
-├── README.md
-├── <strong>api</strong>
-│   ├── app.js
-│   ├── <strong>config</strong>
-│   │   └── config.json
-│   ├── <strong>controllers</strong>
-│   │   ├── index.js
-│   │   └── microPosts.js
-│   └── <strong>models</strong>
-│       ├── MicroPost.js
-│       └── index.js
-├── <strong>client</strong>
-│   ├── README.md
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── <strong>public</strong>
-│   │   ├── favicon.ico
-│   │   ├── index.html
-│   │   ├── logo192.png
-│   │   ├── logo512.png
-│   │   ├── manifest.json
-│   │   └── robots.txt
-│   └── <strong>src</strong>
-│       ├── App.css
-│       ├── App.js
-│       ├── <strong>components</strong>
-│       │   ├── ErrorAlert.js
-│       │   ├── LoadingSpinner.js
-│       │   └── MicroPostCard.js
-│       ├── index.js
-│       └── <strong>pages</strong>
-│           ├── AboutUsPage.js
-│           ├── PostFormPage.js
-│           ├── PostsListPage.js
-│           └── ShowPostPage.js
-├── package-lock.json
-└── package.json
+  .
+  └── music-app
+      ├── api
+      │   ├── config
+      │   │   └── config.json
+      │   ├── controllers
+      │   │   ├── auth.js
+      │   │   ├── index.js
+      │   │   ├── ratings.js
+      │   │   └── reviews.js
+      │   ├── middlewares
+      │   │   └── authentication.js
+      │   ├── models
+      │   │   ├── index.js
+      │   │   ├── Rating.js
+      │   │   ├── Review.js
+      │   │   ├── Song.js
+      │   │   └── User.js
+      │   └── app.js
+      ├── client
+      │   ├── public
+      │   │   ├── favicon.ico
+      │   │   ├── index.html
+      │   │   ├── logo192.png
+      │   │   ├── logo512.png
+      │   │   ├── manifest.json
+      │   │   └── robots.txt
+      │   ├── src
+      │   │   └── components
+      │   │       ├── context
+      │   │       │   ├── AuthContext.js
+      │   │       │   ├── InfoContext.js
+      │   │       │   └── ReviewContext.js
+      │   │       ├── hooks
+      │   │       │   ├── useAxiosFetchSpotify.js
+      │   │       │   └── useGetWinWidth.js
+      │   │       ├── layout
+      │   │       │   ├── Layout.js
+      │   │       │   └── Paging.js
+      │   │       ├── UI
+      │   │       │   ├── AboutUsProfile.js
+      │   │       │   ├── Card.js
+      │   │       │   ├── LoadingSpinner.js
+      │   │       │   ├── LoadingSpinner.module.css
+      │   │       │   ├── NavBarItem.js
+      │   │       │   ├── Ratings.js
+      │   │       │   ├── ReviewCard.js
+      │   │       │   ├── ReviewInputBox.js
+      │   │       │   ├── ScoreCard.js
+      │   │       │   ├── SongCard.js
+      │   │       │   ├── SVG.js
+      │   │       │   └── Tooltip.js
+      │   │       ├── AuthButton.js
+      │   │       ├── ErrorAlert.js
+      │   │       ├── MicroPostCard.js
+      │   │       ├── ReviewContainer.js
+      │   │       ├── SearchBar.js
+      │   │       ├── SongInfo.js
+      │   │       ├── SongList.js
+      │   │       ├── Top10List.js
+      │   │       ├── pages
+      │   │       │   ├── AboutUSPage.js
+      │   │       │   ├── ContactPage.js
+      │   │       │   ├── HomePage.js
+      │   │       │   ├── LoginPage.js
+      │   │       │   ├── PostFormPage.js
+      │   │       │   ├── PostsListPage.js
+      │   │       │   ├── SearchResultListPage.js
+      │   │       │   ├── ShowPostPage.js
+      │   │       │   ├── SignupPage.js
+      │   │       │   └── SongDetailsPage.js
+      │   │       ├── App.js
+      │   │       ├── index.css
+      │   │       └── index.js
+      │   ├── package-lock.json
+      │   ├── package.json
+      │   ├── README.md
+      │   └── tailwind.config.js
+      ├── package-lock.json
+      ├── package.json
+      └── README.md
 </pre>
+
+## Contributors
+
+- [Tianye Chen](https://github.com/tianye-chen)
+- [John Soto](https://github.com/Soto-J/)
+- [Norik Zhagui](https://github.com/Norikaz)
+- [John Alban](https://github.com/JohnA28)

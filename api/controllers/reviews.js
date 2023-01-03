@@ -22,20 +22,38 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", passport.isAuthenticated(), (req, res) => {
-  let { content } = req.body;
-
-  Review.create({ content })
+  Review.create({
+    content: req.body.content,
+    UserId: req.body.UserId,
+    SongId: req.body.SongId,
+  })
     .then((newPost) => {
       res.status(201).json(newPost);
     })
     .catch((err) => {
       res.status(400).json(err);
+      console.log(err);
     });
 });
 
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   Review.findByPk(id).then((mpost) => {
+    if (!mpost) {
+      return res.sendStatus(404);
+    }
+
+    res.json(mpost);
+  });
+});
+
+router.get("/song/:songID", (req, res) => {
+  const { songID } = req.params;
+  Review.findAll({
+    where: {
+      SongId: songID,
+    },
+  }).then((mpost) => {
     if (!mpost) {
       return res.sendStatus(404);
     }

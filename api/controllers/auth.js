@@ -36,6 +36,20 @@ router.get('/login', (req, res) => {
     }
 });
 
+router.get("/:id", (req, res) => {
+  User.findByPk(req.params.id)
+    .then((user) => {
+      if (!user) {
+        res.sendStatus(404);
+      } else {
+        res.json(user);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ msg: "Failed to get user", err });
+    });
+});
+
 router.post('/logout', (req, res, next) => {
     req.logout(req.user, err => {
         if(err) return next(err);

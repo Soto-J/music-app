@@ -44,7 +44,7 @@ export const SearchResultsPage = (props) => {
   }, [searchOffset]);
 
   return (
-    <div className="">
+    <div>
       <SearchBar
         ref={searchBarRef}
         limit={resultsPerPage}
