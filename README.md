@@ -25,10 +25,12 @@ A full stack web application that serves as a music ratings and review website f
   * Spotify song preview
 
 <br/>
-<img src='./images/homePage.png' height='165px'/>
-<img src='./images/searchPage.png' height='165px'/>
-<img src='./images/songPage.png' height='165px'/>
-<img src='./images/songPageReviews.png' height='165px'/>
+<p float="left">
+ <img src='./images/homePage.png' height='250px'/>
+ <img src='./images/searchPage.png' height='250px'/>
+ <img src='./images/songPage.png' height='250px'/>
+ <img src='./images/songPageReviews.png' height='250px'/>
+</p>
 <br/>
 <br/>
 
