@@ -30,14 +30,13 @@ export const Top10List = (props) => {
         })
         .catch(console.log("error"));
     }
-  }, [Card]);
-
-  console.log(playlistInfo);
+  }, [playlistInfo, token]);
 
   function Card(props) {
     const handleClick = () => {
-      setSongInfo(props.playlistInfo.items[props.index].track);
-      navigate("/song-details");
+      const track = props.playlistInfo.items[props.index].track;
+      setSongInfo(track);
+      navigate(`/song-details/${track.id}`);
     };
 
     return (
@@ -46,7 +45,7 @@ export const Top10List = (props) => {
           <h1 className="mt-8 ml-8 text-4xl font-semibold text-left">
             {props.index + 1}
           </h1>
-          <h1 className="ml-8 text-2xl font-semibold text-left">
+          <h1 className="ml-8 text-5xl font-semibold text-left">
             {props.playlistInfo
               ? props.playlistInfo.items[props.index].track.name
               : "N/A"}
@@ -63,7 +62,7 @@ export const Top10List = (props) => {
               ? props.playlistInfo.items[props.index].track.album.images[0].url
               : ""
           }
-          className="z-[-1] absolute w-[100%] -translate-y-1/4"
+          className="z-[-1] absolute w-[100%] h-[100%] md:h-auto md:-translate-y-1/4"
           alt=""
         ></img>
       </div>

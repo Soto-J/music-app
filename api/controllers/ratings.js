@@ -22,13 +22,16 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", passport.isAuthenticated(), (req, res) => {
-  let { rating } = req.body;
-
-  Rating.create({ rating })
+  Rating.create({
+    rating: req.body.rating,
+    UserId: req.body.UserId,
+    SongId: req.body.SongId,
+  })
     .then((newPost) => {
       res.status(201).json(newPost);
     })
     .catch((err) => {
+      console.log(err);
       res.status(400).json(err);
     });
 });
@@ -44,36 +47,93 @@ router.get("/:id", (req, res) => {
   });
 });
 
-router.put("/:id", passport.isAuthenticated(), (req, res) => {
-  const { id } = req.params;
-  Rating.findByPk(id).then((mpost) => {
+router.get("/song/:songID/:userID", (req, res) => {
+  const { songID, userID } = req.params;
+  Rating.findOne({
+    where: {
+      SongId: songID,
+      UserId: userID,
+    },
+  }).then((mpost) => {
     if (!mpost) {
       return res.sendStatus(404);
     }
 
-    mpost.rating = req.body.rating; 
-    
-    mpost
-      .save()
-      .then((updatedPost) => {
-        res.json(updatedPost);
+    res.json(mpost);
+  });
+});
+
+router.get("/song/:songID", (req, res) => {
+  const { songID } = req.params;
+  Rating.findAll({
+    where: {
+      SongId: songID,
+    },
+  }).then((mpost) => {
+    if (!mpost) {
+      return res.sendStatus(404);
+    }
+
+    res.json(mpost);
+  });
+});
+
+// update rating if matching rating exists, if not create one
+router.put("/song/:songID/:userID", passport.isAuthenticated(), (req, res) => {
+  const { songID, userID } = req.params;
+  Rating.findOne({
+    where: {
+      SongId: songID,
+      UserId: userID,
+    },
+  }).then((mpost) => {
+    if (!mpost) {
+      Rating.create({
+        rating: req.body.rating,
+        UserId: userID,
+        SongId: songID,
       })
-      .catch((err) => {
-        res.status(400).json(err);
-      });
-  });
-});
+        .then((newPost) => {
+          res.status(201).json(newPost);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(400).json(err);
+        });
+    } else {
+      mpost.rating = req.body.rating;
 
-router.delete("/:id", passport.isAuthenticated(), (req, res) => {
-  const { id } = req.params;
-  Rating.findByPk(id).then((mpost) => {
-    if (!mpost) {
-      return res.sendStatus(404);
+      mpost
+        .save()
+        .then((updatedPost) => {
+          res.json(updatedPost);
+        })
+        .catch((err) => {
+          res.status(400).json(err);
+        });
     }
-
-    mpost.destroy();
-    res.sendStatus(204);
   });
 });
+
+router.delete(
+  "/song/:songID/:userID",
+  passport.isAuthenticated(),
+  (req, res) => {
+    const { songID, userID } = req.params;
+    Rating.findOne({
+      where: {
+        SongId: songID,
+        UserId: userID,
+      },
+    }).then((mpost) => {
+      if (!mpost) {
+        return res.sendStatus(404);
+      }
+
+      mpost.destroy();
+      res.sendStatus(204);
+    });
+  }
+);
 
 module.exports = router;

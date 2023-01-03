@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Routes, Route, Router } from "react-router-dom";
-import { PostsListPage } from "./pages/PostsListPage";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 import { PostFormPage } from "./pages/PostFormPage";
-import { ShowPostPage } from "./pages/ShowPostPage";
 import { AboutUsPage } from "./pages/AboutUsPage";
 import { SongPage } from "./pages/SongDetailsPage";
 import { ContactPage } from "./pages/ContactPage";
@@ -26,7 +24,8 @@ export const App = () => {
             {/* displays a search bar and a carousel of 10 songs*/}
             <Route path="/" element={<HomePage />} />
             {/*displays the info and reviews on individual songs*/}
-            <Route path="/song-details" element={<SongPage />} />
+            <Route path="/song-details/:id" element={<SongPage />} />
+            <Route path="/song-details/" element={<SongPage />} />
             {/* search results will be displayed as a list on this page */}
             <Route path="/search-results" element={<SearchResultsPage />} />
             <Route path="/posts/new" element={<PostFormPage />} />

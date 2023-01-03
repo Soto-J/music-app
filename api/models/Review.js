@@ -9,9 +9,15 @@ module.exports = (sequelize, DataTypes) => {
       content: {
         type: DataTypes.STRING,
         validate: {
-          len: [3, 250],
+          len: [3, 1000],
           notEmpty: true,
         },
+      },
+      SongId: {
+        type: DataTypes.STRING,
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
       },
     },
     {

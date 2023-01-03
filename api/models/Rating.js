@@ -6,12 +6,18 @@ module.exports = (sequelize, DataTypes) => {
   Rating.init(
     {
       rating: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE,
         allowNull: true,
         validate: {
-          min: 1,
+          min: 0,
           max: 10,
         },
+      },
+      SongId: {
+        type: DataTypes.STRING,
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
       },
     },
     {

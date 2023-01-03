@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 //useAuth contains basic information and methods for a user
 import { useAuth } from './context/AuthContext';
 const classes =
-  "bg-green-300 hover:bg-green-500 md:ml-12 p-3 rounded-2xl btn btn-primary text-black transition-all ease-in-out";
+  "bg-green-300 hover:bg-green-500 md:ml-12 ml-2 p-3 rounded-2xl btn btn-primary text-black transition-all ease-in-out";
 
 const AuthButton = () => {
   const auth = useAuth();
@@ -22,7 +22,7 @@ const AuthButton = () => {
   };
 
   return (
-    <div className="ml-6 text-green-800">
+    <div className="ml-4 text-green-800">
       {auth.user.firstName} {auth.user.lastName}
       <span className={`${classes} cursor-pointer`} onClick={logout}>
         Logout

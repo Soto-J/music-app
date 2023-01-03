@@ -18,7 +18,7 @@ export const Navigation = (props) => {
         </div>
       </Link>
 
-      <span className="z-50 inline-flex items-center mx-2 text-3xl cursor-pointer md:hidden">
+      <span className="z-50 inline-flex items-center mr-2 text-3xl cursor-pointer md:hidden">
         <span className="mr-6 text-sm">
           <AuthButton />
         </span>
@@ -43,7 +43,7 @@ export const Navigation = (props) => {
           <NavBarItem text="About Us" />
         </NavLink>
 
-        <li className="hidden py-5 mr-6 lg:block">
+        <li className="hidden py-5 mr-6 md:block">
           <AuthButton />
         </li>
       </ul>
